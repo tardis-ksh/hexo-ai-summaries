@@ -8,7 +8,7 @@ export default defineConfig([
     dts: false, // 生成 .d.ts 声明文件
     sourcemap: false,
     clean: true, // 构建前清理输出目录
-    minify: true, // 压缩代码
+    minify: false, // 压缩代码
     bundle: true, // 启用代码打包
 
     esbuildOptions: (options) => {

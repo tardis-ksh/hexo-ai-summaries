@@ -1,23 +1,37 @@
 import chalk from 'chalk';
 import merge from 'lodash.merge';
 
-import generator from '@/generators';
-import deploys from '@/deploys';
+import addAiContentFilter from '@/filter';
+import aiFileGenerator from '@/generators';
 
 import { PLUGIN_NAME } from '@/constants';
-import { HexoConfig } from '@/types';
-import IHexo from '@/types/hexo';
+import { PluginConfig } from '@/types';
 
 console.log(chalk.bold.bgMagenta(`${PLUGIN_NAME} run, have fun!`));
 
-const DefaultConfig: HexoConfig = {
-  enable: true,
+const DefaultConfig: PluginConfig = {
+  aiSummaryApi: undefined,
+  tagConfig: {
+    content: '.post-gemini-ai-result',
+    title: '.post-title',
+    toc: '.toc-content',
+  },
+  enable: false,
+  maxToken: 30000,
+  prompt: `You are a highly skilled AI trained in language comprehension and summarization. I would like you to read the text delimited by triple quotes and summarize it into a concise abstract paragraph. Aim to retain the most important points, providing a coherent and readable summary that could help a person understand the main points of the discussion without needing to read the entire text. Please avoid unnecessary details or tangential points.\nOnly give me the output and nothing else. Do not wrap responses in quotes. Respond in the Chinese language.`,
+  geminiConfig: {
+    model: 'gpt-4o',
+    temperature: 0.7,
+  },
+  // generateAfterDate: '2024/04',
 };
 
 hexo.config[PLUGIN_NAME] = merge({}, DefaultConfig, hexo.config[PLUGIN_NAME]);
 
-hexo.extend.generator.register(`${PLUGIN_NAME} generator`, generator);
+const pluginConfig = hexo.config[PLUGIN_NAME];
 
-hexo.extend.deployer.register(PLUGIN_NAME, async () => {
-  return await deploys(hexo as IHexo);
-});
+// first run hexo clean then run filter
+if (pluginConfig?.enable) {
+  hexo.extend.generator.register(`${PLUGIN_NAME}-generator`, aiFileGenerator);
+  hexo.extend.filter.register('after_post_render', addAiContentFilter);
+}
