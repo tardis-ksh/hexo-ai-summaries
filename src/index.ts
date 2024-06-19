@@ -22,6 +22,10 @@ const DefaultConfig: PluginConfig = {
   geminiConfig: {
     model: 'gpt-4o',
     temperature: 0.7,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': '*',
+    },
   },
   // generateAfterDate: '2024/04',
 };

@@ -67,6 +67,9 @@
         let postAIResult = document.querySelector('{{{tagConfig.content}}}');
         let input = document.querySelector('.post-content').innerText;
         const postToc = document.querySelector('{{{tagConfig.toc}}}');
+        const updateTimeEl = document.querySelector('.post-meta-date-updated');
+        const updateTime = Date.parse(updateTimeEl.getAttribute('datetime'));
+
         let inputContent = input
           .replace(/\n/g, '')
           .replace(/[ ]+/g, ' ')
@@ -75,10 +78,12 @@
           .substring(0, {{{maxToken}}});
         let toAI = `文章标题：${postTile}；文章目录：${postToc?.textContent}；具体内容：${inputContent}`;
         const res = await fetch(GeminiFetch, {
+          {{#if geminiConfig.headers}}
           headers: {
             'Content-Type': 'application/json',
             Authorization: '*',
           },
+          {{/if}}
           method: 'POST',
           body: JSON.stringify({
             model: '{{{ geminiConfig.model }}}',
@@ -91,6 +96,7 @@
             ],
             temperature: {{{ geminiConfig.temperature }}},
             stream: true,
+            updateTime,
           }),
         });
         const reader = res.body.getReader();

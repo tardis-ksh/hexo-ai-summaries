@@ -16,6 +16,7 @@ export interface PluginConfig {
   geminiConfig?: {
     model: string;
     temperature: number;
+    headers?: Record<string, string>;
   };
   // by createDate
   generateAfterDate?: string;
