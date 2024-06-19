@@ -64,8 +64,8 @@
       postAI.classList.add('post-gemini-noclick');
       let GeminiFetch = '{{{aiSummaryApi}}}';
       try {
-        let postAIResult = document.querySelector('{{{tagConfig.content}}}');
-        let input = document.querySelector('.post-content').innerText;
+        let postAIResult = document.querySelector('.post-gemini-ai-result');
+        let input = document.querySelector('{{{tagConfig.content}}}').innerText;
         const postToc = document.querySelector('{{{tagConfig.toc}}}');
         const updateTimeEl = document.querySelector('.post-meta-date-updated');
         const updateTime = Date.parse(updateTimeEl.getAttribute('datetime'));

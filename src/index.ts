@@ -12,7 +12,7 @@ console.log(chalk.bold.bgMagenta(`${PLUGIN_NAME} run, have fun!`));
 const DefaultConfig: PluginConfig = {
   aiSummaryApi: undefined,
   tagConfig: {
-    content: '.post-gemini-ai-result',
+    content: '.post-content',
     title: '.post-title',
     toc: '.toc-content',
   },

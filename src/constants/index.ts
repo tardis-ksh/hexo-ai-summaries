@@ -1,4 +1,4 @@
-export const PLUGIN_NAME = 'hexo-ai-summary';
+export const PLUGIN_NAME = 'hexo-ai-summaries';
 
 export enum HtmlPath {
   JS = 'gemini.js',
