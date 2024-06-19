@@ -1,5 +1,5 @@
 {
-  "name": "hexo-ai-summary",
+  "name": "hexo-ai-summaries",
   "version": "0.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
