@@ -22,13 +22,15 @@
   },
   "keywords": [
     "hexo",
+    "AI",
+    "summary",
     "plugin"
   ],
   "authors": [
     "tardis <kshao666@gmail.com>"
   ],
   "license": "MIT",
-  "description": "A Hexo plugin with typescript",
+  "description": "AI generates article summaries with support for custom templates",
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",

@@ -7,7 +7,7 @@
     <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&width=435&lines=Hexo AI Summaries;&center=true&size=27" alt="Typing SVG" />
 </a>
 
-自动或手动提交您的网站信息至搜索引擎（谷歌，bing，百度）。支持配置 `GitHub Actions` 或 `Coding Jenkins` 来适配不同平台的 `CI`
+AI 生成文章摘要，支持自定义模板
 
 [![CI status][github-action-image]][github-action-url]
 [![NPM version][npm-image]][npm-url]
