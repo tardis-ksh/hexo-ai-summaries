@@ -97,6 +97,7 @@
             temperature: {{{ geminiConfig.temperature }}},
             stream: true,
             updateTime,
+            title: postTile,
           }),
         });
         const reader = res.body.getReader();
