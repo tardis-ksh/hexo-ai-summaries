@@ -24,6 +24,11 @@ const addAiContentFilter = async (data: any) => {
   const { generateAfterDate, customHtml } = hexo.config[
     PLUGIN_NAME
   ] as PluginConfig;
+  // post front 中定义
+  if (data['ai-summaries'] === false) {
+    return data;
+  }
+
   const isAfterDate = generateAfterDate
     ? Date.parse(generateAfterDate) <=
       Date.parse(data.date.startOf('day').format('yyyy-MM-DD HH:mm:ss'))

@@ -100,6 +100,12 @@
             title: postTile,
           }),
         });
+
+        if (!res.ok) {
+          // 抛出错误，以便在 catch 块中捕获
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
         const reader = res.body.getReader();
         while (true) {
           const { value, done } = await reader.read();
@@ -123,7 +129,7 @@
           await fakeAiTypedInput(str, postAIResult);
         }
       } catch (error) {
-        document.querySelector('.post-gemini-ai-result').remove();
+        document.querySelector('.post-gemini-ai-result-wrap').remove();
         console.log(error);
       }
     }
