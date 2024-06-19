@@ -59,6 +59,8 @@ hexo-ai-summaries:
     styleFile: demo/js/AI/Gemini/customhtml/gemini.css
 ```
 
+in your post front-matter, add `ai-summaries: false` to disable ai-summaries;
+
 ```yaml
 title: xxx
 date: xxx
