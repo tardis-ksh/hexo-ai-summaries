@@ -1,5 +1,6 @@
  .post-gemini-ai {
     cursor: pointer;
+    width: max-content;
   }
 
   .post-gemini-ai > .ai-summary-img {
