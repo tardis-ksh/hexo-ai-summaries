@@ -16,7 +16,7 @@ ${
   />
 </div>`
 }
-<script src="/${PLUGIN_NAME}/${HtmlPath.JS}">// ${PLUGIN_NAME} generated</script>
+<script src="/${PLUGIN_NAME}/${HtmlPath.JS}"></script>
 `;
 };
 

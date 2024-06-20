@@ -54,9 +54,9 @@ hexo-ai-summaries:
   # you can check the result in `hexo/public/posts` folder  
   # and generated file in `hexo/public/hexo-ai-summaries/`
   customHtml:
-    htmlFile: demo/js/AI/Gemini/customhtml/gemini.html
-    jsFile: demo/js/AI/Gemini/customhtml/gemini.js
-    styleFile: demo/js/AI/Gemini/customhtml/gemini.css
+    htmlFile: /Gemini/gemini.html
+    jsFile: /Gemini/gemini.js
+    styleFile: /Gemini/gemini.css
 ```
 
 in your post front-matter, add `ai-summaries: false` to disable ai-summaries;
@@ -69,3 +69,5 @@ cover: xxx
 # add this line to disable ai-summaries
 ai-summaries: false
 ```
+
+> [ai-summaries 使用文档](https://ksh7.com/posts/ai-summaries/)
