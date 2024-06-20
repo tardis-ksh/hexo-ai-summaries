@@ -1,3 +1,12 @@
+# [0.4.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.3.0...v0.4.0) (2024-06-20)
+
+
+### Features
+
+* optimization style ([d4fc0e2](https://github.com/tardis-ksh/hexo-ai-summaries/commit/d4fc0e2bdda7651a3265cd42aad8e8ca29d87044))
+
+
+
 # [0.3.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.2.0...v0.3.0) (2024-06-19)
 
 
