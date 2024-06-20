@@ -31,7 +31,8 @@ const addAiContentFilter = async (data: any) => {
 
   const isAfterDate = generateAfterDate
     ? Date.parse(generateAfterDate) <=
-      Date.parse(data.date.startOf('day').format('yyyy-MM-DD HH:mm:ss'))
+      // moment startOf(Day) 会修改原始数据
+      Date.parse(`${data.date.format('yyyy-MM-DD')} 00:00`)
     : false;
   if (!isAfterDate) {
     return data;
