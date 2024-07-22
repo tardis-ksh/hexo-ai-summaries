@@ -16,7 +16,7 @@ importers:
         version: 4.7.8
       hexo:
         specifier: ^7.2.0
-        version: 7.2.0(chokidar@3.6.0)
+        version: 7.3.0(chokidar@3.6.0)
       lodash.merge:
         specifier: ^4.6.2
         version: 4.6.2
@@ -1085,8 +1085,8 @@ packages:
     resolution: {integrity: sha512-YvGngXijE2muEh5L/VI4Fmjqb+/yAkmY+VuyhWVoRwQu1X7bmWodsfYRXX7CUYhi5LqsvH8FAe/yBW1+f6ZX4Q==}
     engines: {node: '>=14'}
 
-  hexo@7.2.0:
-    resolution: {integrity: sha512-RYIzl7jfG0i2jH/k5IZg4C1anyHfmKHNUsBKIn9LU0V3iQ0WQrwuOLFDJwaZDenqmzHYJhAVCGAkrBDfF/IlVg==}
+  hexo@7.3.0:
+    resolution: {integrity: sha512-dOe8mzBKrvjubW5oBmyhcnQDpC+M2xmAMLae5K+o+SkHxyvAhShkS2VQZoTsOLIJKY6xilv7dzCjCvE7ol/NHQ==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -1143,8 +1143,9 @@ packages:
     resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==}
     engines: {node: '>=8'}
 
-  is-core-module@2.13.1:
-    resolution: {integrity: sha512-hHrIjvZsftOsvKSn2TRYl63zvxsgE0K+0mYMoH6gD4omR5IWB2KynivBQczo3+wF1cCkjzvptnI9Q0sPU66ilw==}
+  is-core-module@2.14.0:
+    resolution: {integrity: sha512-a5dFJih5ZLYlRtDc0dZWP7RiKr6xIKzmn/oAYCDvdLThadVgyJwlaoQPmRtMSpz+rk0OGAgIu+TcM9HUF0fk1A==}
+    engines: {node: '>= 0.4'}
 
   is-extglob@2.1.1:
     resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==}
@@ -2921,7 +2922,7 @@ snapshots:
       prismjs: 1.29.0
       strip-indent: 3.0.0
 
-  hexo@7.2.0(chokidar@3.6.0):
+  hexo@7.3.0(chokidar@3.6.0):
     dependencies:
       abbrev: 2.0.0
       archy: 1.0.0
@@ -2988,7 +2989,7 @@ snapshots:
     dependencies:
       binary-extensions: 2.3.0
 
-  is-core-module@2.13.1:
+  is-core-module@2.14.0:
     dependencies:
       hasown: 2.0.2
 
@@ -3341,7 +3342,7 @@ snapshots:
 
   resolve@1.22.8:
     dependencies:
-      is-core-module: 2.13.1
+      is-core-module: 2.14.0
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
 
