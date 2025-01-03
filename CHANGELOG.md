@@ -1,3 +1,12 @@
+# [0.7.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.5.1...v0.7.0) (2025-01-03)
+
+
+### Features
+
+* del alt attr ([073a4ac](https://github.com/tardis-ksh/hexo-ai-summaries/commit/073a4acd281fd297dc1d634a25f8881990432b83))
+
+
+
 ## [0.5.1](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.5.0...v0.5.1) (2024-06-20)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * update README.md ([d1448b8](https://github.com/tardis-ksh/hexo-ai-summaries/commit/d1448b8dc3e69b4dedde4d13b3d806693f6e663b))
-
-
-
-# [0.2.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.1.0...v0.2.0) (2024-06-19)
-
-
-### Features
-
-* change content var ([3cc2abf](https://github.com/tardis-ksh/hexo-ai-summaries/commit/3cc2abf19bd5acffee007754aaebf3c6d2c43beb))
 
 
 
