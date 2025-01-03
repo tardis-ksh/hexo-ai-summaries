@@ -14,7 +14,8 @@ ${
   <img
     class="no-lightbox ai-summary-img"
     src="https://static.ksh7.com/utils/gemini-summary.svg"
-  />
+    alt=""
+   />
 </div>`
 }
 <script src="/${PLUGIN_NAME}/${HtmlPath.JS}"></script>
