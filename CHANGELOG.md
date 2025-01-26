@@ -1,3 +1,12 @@
+# [0.9.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.8.0...v0.9.0) (2025-01-26)
+
+
+### Features
+
+* add custom headers ([b18db05](https://github.com/tardis-ksh/hexo-ai-summaries/commit/b18db05fd939a6525295a8e741e09095bdb7a7c7))
+
+
+
 # [0.8.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.7.0...v0.8.0) (2025-01-26)
 
 
@@ -31,15 +40,6 @@
 ### Features
 
 * optimization ([3da9b61](https://github.com/tardis-ksh/hexo-ai-summaries/commit/3da9b61de2dd3e2325d59c0405f19e8cf7334f20))
-
-
-
-# [0.4.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.3.0...v0.4.0) (2024-06-20)
-
-
-### Features
-
-* optimization style ([d4fc0e2](https://github.com/tardis-ksh/hexo-ai-summaries/commit/d4fc0e2bdda7651a3265cd42aad8e8ca29d87044))
 
 
 
