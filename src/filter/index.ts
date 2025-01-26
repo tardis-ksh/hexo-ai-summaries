@@ -4,18 +4,17 @@ import path from 'node:path';
 import { HtmlPath, PLUGIN_NAME } from '@/constants';
 import { PluginConfig } from '@/types';
 import * as process from 'node:process';
+import generateTemplate from '@/handlebars';
 
 // img.shields.io
-const getHtmlContent = (content?: string) => {
+const getHtmlContent = async (content?: string) => {
   return `<link rel="stylesheet" href="/${PLUGIN_NAME}/${HtmlPath.CSS}">
 ${
   content ||
-  `<div class="post-gemini-ai">
-  <img
-    class="no-lightbox ai-summary-img"
-    src="https://static.ksh7.com/utils/gemini-summary.svg"
-   />
-</div>`
+  generateTemplate(
+    await fsp.readFile(path.join(__dirname, '../templates/html.tpl'), 'utf8'),
+    {},
+  )
 }
 <script src="/${PLUGIN_NAME}/${HtmlPath.JS}"></script>
 `;
@@ -45,7 +44,8 @@ const addAiContentFilter = async (data: any) => {
       'utf-8',
     );
   }
-  data.content = getHtmlContent(htmlContent) + data.content;
+  const extraContent = await getHtmlContent(htmlContent);
+  data.content = extraContent + data.content;
   return data;
 };
 
