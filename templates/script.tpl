@@ -150,7 +150,9 @@
         let toAI = `文章标题：${postTile}；文章目录：${postToc?.textContent}；具体内容：${inputContent}`;
         const res = await fetch(GeminiFetch, {
           {{#if geminiConfig.headers}}
-          headers: {{geminiConfig.headers}},
+          headers: {
+           'X-Ca-Nonce': window.crypto.randomUUID()
+          },
           {{/if}}
           method: 'POST',
           body: JSON.stringify({
