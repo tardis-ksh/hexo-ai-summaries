@@ -7,7 +7,9 @@ import aiFileGenerator from '@/generators';
 import { PLUGIN_NAME } from '@/constants';
 import { PluginConfig } from '@/types';
 
-console.log(chalk.bold.bgMagenta(`${PLUGIN_NAME} run, have fun!`));
+console.log(
+  chalk.bold.bgMagenta(`${PLUGIN_NAME}@${PACKAGE_VERSION} run, have fun!`),
+);
 
 const DefaultConfig: PluginConfig = {
   aiSummaryApi: undefined,

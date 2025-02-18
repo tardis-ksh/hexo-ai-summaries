@@ -206,6 +206,14 @@
         postAiTrigger.classList.remove('ai-summary-active');
       }
     }
+
+    setTimeout(() => {
+        const trigger = document.querySelector('.ai-summary-trigger');
+        const textEl = trigger.querySelectorAll('text');
+        textEl?.forEach(el => {
+            el.textContent = el.dataset.content;
+        })
+    })
   }
 
   initGeminiAiSummary();

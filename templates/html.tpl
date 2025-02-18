@@ -7,36 +7,6 @@
     role="img"
     class="ai-summary-trigger"
   >
-    <style>
-      .ai-summary-active .ai-summary-icon-title text:first-of-type {
-        display: none !important;
-      }
-
-      .ai-summary-active .ai-summary-icon-title text:last-child {
-        display: initial !important;
-      }
-
-      .ai-summary-active #r rect {
-        width: 105px !important;
-      }
-
-      .ai-summary-active .ai-summary-rect {
-        width: 80px !important;
-      }
-
-      .ai-summary-pen {
-        opacity: 1;
-        animation: ai-wink 2s infinite;
-      }
-      @keyframes ai-wink {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-    </style>
     <linearGradient id="s" x2="0" y2="100%">
       <stop offset="0" stop-color="#bbb" stop-opacity=".1" />
       <stop offset="1" stop-opacity=".1" />
@@ -71,8 +41,8 @@
         height="14"
         xlink:href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2Utd2lkdGg9IjIiIGQ9Im0yMS42NCAzLjY0bC0xLjI4LTEuMjhhMS4yMSAxLjIxIDAgMCAwLTEuNzIgMEwyLjM2IDE4LjY0YTEuMjEgMS4yMSAwIDAgMCAwIDEuNzJsMS4yOCAxLjI4YTEuMiAxLjIgMCAwIDAgMS43MiAwTDIxLjY0IDUuMzZhMS4yIDEuMiAwIDAgMCAwLTEuNzJNMTQgN2wzIDNNNSA2djRtMTQgNHY0TTEwIDJ2Mk03IDhIM20xOCA4aC00TTExIDNIOSIvPjwvc3ZnPg=="
       />
-      <text x="750" y="140" transform="scale(.1)" fill="#fff" textLength="900">
-        点击获取文章摘要
+      <text x="750" y="140" transform="scale(.1)" fill="#fff" textLength="900" data-content="点击获取文章摘要">
+
       </text>
       <text
         style="display: none"
@@ -81,8 +51,9 @@
         transform="scale(.1)"
         fill="#fff"
         textLength="600"
+        data-content="文章摘要"
       >
-        文章摘要
+
       </text>
     </g>
   </svg>
