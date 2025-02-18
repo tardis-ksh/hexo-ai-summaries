@@ -1,3 +1,12 @@
+# [0.10.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.9.0...v0.10.0) (2025-02-18)
+
+
+### Features
+
+* update template ([6c90a35](https://github.com/tardis-ksh/hexo-ai-summaries/commit/6c90a3502c870bbb04e81da46a5ccc8254088042))
+
+
+
 # [0.9.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.8.0...v0.9.0) (2025-01-26)
 
 
@@ -31,15 +40,6 @@
 ### Bug Fixes
 
 * useless moment ([1213442](https://github.com/tardis-ksh/hexo-ai-summaries/commit/1213442a8d9fd95fea29056f1ac25725fe66f676))
-
-
-
-# [0.5.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.4.0...v0.5.0) (2024-06-20)
-
-
-### Features
-
-* optimization ([3da9b61](https://github.com/tardis-ksh/hexo-ai-summaries/commit/3da9b61de2dd3e2325d59c0405f19e8cf7334f20))
 
 
 
