@@ -35,6 +35,7 @@ pnpm add hexo-ai-summaries
 ```yaml root/_config.yml
 hexo-ai-summaries:
   enable: true
+  # only work after this date
   generateAfterDate: 2024/05
   aiSummaryApi: https://<cloudflare workers url>.workers.dev/v1/chat/completions
   maxToken: 30000
