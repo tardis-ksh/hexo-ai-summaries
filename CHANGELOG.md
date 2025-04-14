@@ -1,3 +1,12 @@
+# [1.1.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v1.0.0...v1.1.0) (2025-04-14)
+
+
+### Features
+
+* cancel space between code ([472a70e](https://github.com/tardis-ksh/hexo-ai-summaries/commit/472a70e66dd59a314a0f37d796ceda9781b1e7ef))
+
+
+
 # [1.0.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.10.0...v1.0.0) (2025-04-14)
 
 
@@ -45,15 +54,6 @@
 ### Features
 
 * change html content ([332c6c9](https://github.com/tardis-ksh/hexo-ai-summaries/commit/332c6c96400955bca86339861367cf2daa1ac936))
-
-
-
-# [0.7.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.5.1...v0.7.0) (2025-01-03)
-
-
-### Features
-
-* del alt attr ([073a4ac](https://github.com/tardis-ksh/hexo-ai-summaries/commit/073a4acd281fd297dc1d634a25f8881990432b83))
 
 
 
