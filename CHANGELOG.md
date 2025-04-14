@@ -1,3 +1,12 @@
+## [1.1.2](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v1.1.1...v1.1.2) (2025-04-14)
+
+
+### Bug Fixes
+
+* use fn wrap ([aa3dd24](https://github.com/tardis-ksh/hexo-ai-summaries/commit/aa3dd24ee22fb32b6e81138d459209328d3857ce))
+
+
+
 ## [1.1.1](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v1.1.0...v1.1.1) (2025-04-14)
 
 
@@ -45,15 +54,6 @@
 ### Features
 
 * update template ([6c90a35](https://github.com/tardis-ksh/hexo-ai-summaries/commit/6c90a3502c870bbb04e81da46a5ccc8254088042))
-
-
-
-# [0.9.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.8.0...v0.9.0) (2025-01-26)
-
-
-### Features
-
-* add custom headers ([b18db05](https://github.com/tardis-ksh/hexo-ai-summaries/commit/b18db05fd939a6525295a8e741e09095bdb7a7c7))
 
 
 
