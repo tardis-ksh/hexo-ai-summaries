@@ -8,7 +8,7 @@ import generateTemplate from '@/handlebars';
 
 // img.shields.io
 const getHtmlContent = async (content?: string) => {
-  return `<link rel="stylesheet" href="/${PLUGIN_NAME}/${HtmlPath.CSS}">
+  return `<link rel="stylesheet" href="/${PLUGIN_NAME}/${HtmlPath.CSS}?v${PACKAGE_VERSION}">
 ${
   content ||
   generateTemplate(
@@ -16,7 +16,7 @@ ${
     {},
   )
 }
-<script src="/${PLUGIN_NAME}/${HtmlPath.JS}"></script>
+<script src="/${PLUGIN_NAME}/${HtmlPath.JS}?v${PACKAGE_VERSION}"></script>
 `;
 };
 

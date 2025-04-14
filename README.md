@@ -36,17 +36,19 @@ pnpm add hexo-ai-summaries
 hexo-ai-summaries:
   enable: true
   # only work after this date
-  generateAfterDate: 2024/05
+  generateAfterDate: 2024/05 # optional
   aiSummaryApi: https://<cloudflare workers url>.workers.dev/v1/chat/completions
-  maxToken: 30000
+  maxToken: 30000 # optional
   prompt:
     You are a highly skilled AI trained in language comprehension and summarization. I would like you to read the text delimited by triple quotes and summarize it into a concise abstract paragraph. Aim to retain the most important points, providing a coherent and readable summary that could help a person understand the main points of the discussion without needing to read the entire text. Please avoid unnecessary details or tangential points.
     Only give me the output and nothing else. Do not wrap responses in quotes. Respond in the Chinese language.
-  geminiConfig:
+  # fetch body
+  aiConfig:
     model: gpt-4o
-    temperature: 0.7
-    headers: false
-  tagConfig:
+    temperature: 0.7 # optional
+    stream: false # optional default true
+    headers: { 'Content-Type': 'application/json' } # optional, default undefined
+  tagConfig: # optional
     title: .post-title
     content: .post-content
     toc: .toc-content
@@ -54,7 +56,7 @@ hexo-ai-summaries:
   # you can customize the html, js, css file, and then plugin just only insert this file to your post
   # you can check the result in `hexo/public/posts` folder  
   # and generated file in `hexo/public/hexo-ai-summaries/`
-  customHtml:
+  customHtml: # optional
     htmlFile: /Gemini/gemini.html
     jsFile: /Gemini/gemini.js
     styleFile: /Gemini/gemini.css

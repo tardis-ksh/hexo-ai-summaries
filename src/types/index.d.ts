@@ -1,4 +1,5 @@
 export interface PluginConfig {
+  PACKAGE_VERSION: string;
   enable: boolean;
   aiSummaryApi: string;
   prompt?: string;
@@ -13,10 +14,12 @@ export interface PluginConfig {
     content: string;
     toc: string;
   }>;
-  geminiConfig?: {
+  aiConfig?: {
     model: string;
-    temperature: number;
+    temperature?: number;
     headers?: Record<string, string>;
+    idempotentHeader?: boolean;
+    stream?: boolean;
   };
   // by createDate
   generateAfterDate?: string;
