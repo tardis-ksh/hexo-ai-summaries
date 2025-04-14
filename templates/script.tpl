@@ -1,3 +1,4 @@
+function geminiAIImpl() {
 class GeminiAI {
   constructor() {
     this.initAI();
@@ -76,6 +77,9 @@ class GeminiAI {
    * log brand information: https://patorjk.com/software/taag/#p=display&f=Doom&t=ai-summaries
    */
   initBrandInfo() {
+    if (this.initBrandBefore || window.initAIBrandBefore) {
+      return;
+    }
     const information = [
       `  .--.  .-. .----..-. .-..-.   .-..-.   .-.  .--.  .----. .-..----. .----.
  / {} \\ | |{ {__  | { } ||  \`.'  ||  \`.'  | / {} \\ | {}  }| || {_  { {__
@@ -90,6 +94,7 @@ class GeminiAI {
       'color:white; background-color:#4fd953',
     );
     console.log(`%c${information[0]}`, 'color:#ff69b4;');
+    this.initBrandBefore = window.initAIBrandBefore = true;
   }
 
   /**
@@ -365,3 +370,6 @@ class GeminiAI {
   }
 
   new GeminiAI();
+}
+
+geminiAIImpl();
