@@ -1,3 +1,12 @@
+## [1.1.1](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v1.1.0...v1.1.1) (2025-04-14)
+
+
+### Bug Fixes
+
+* rename stream ([8170f6a](https://github.com/tardis-ksh/hexo-ai-summaries/commit/8170f6ac0ea96d9ff02a6310d42882a65daf4cdf))
+
+
+
 # [1.1.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v1.0.0...v1.1.0) (2025-04-14)
 
 
@@ -45,15 +54,6 @@
 ### Features
 
 * add custom headers ([b18db05](https://github.com/tardis-ksh/hexo-ai-summaries/commit/b18db05fd939a6525295a8e741e09095bdb7a7c7))
-
-
-
-# [0.8.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.7.0...v0.8.0) (2025-01-26)
-
-
-### Features
-
-* change html content ([332c6c9](https://github.com/tardis-ksh/hexo-ai-summaries/commit/332c6c96400955bca86339861367cf2daa1ac936))
 
 
 
