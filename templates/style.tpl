@@ -54,9 +54,6 @@
     opacity: 1;
     animation: ai-wink 2s infinite;
 }
-.post-gemini-ai-result-wrap code {
-    margin-inline: 4px;
-}
 
 @keyframes ai-wink {
     from {
