@@ -41,7 +41,7 @@ class GeminiAI {
       {{#if aiConfig.temperature}}
       temperature: {{{ aiConfig.temperature }}},
       {{/if}}
-      {{#if aiConfig.temperature}}
+      {{#if aiConfig.stream}}
       stream: {{{ aiConfig.stream }}},
       {{/if}}
       prompt: "{{{prompt}}}",
