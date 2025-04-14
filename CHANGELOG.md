@@ -1,3 +1,26 @@
+# [1.0.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.10.0...v1.0.0) (2025-04-14)
+
+
+### Features
+
+* add version flag ([972ff94](https://github.com/tardis-ksh/hexo-ai-summaries/commit/972ff9415602639d53a7ea5f4de1f31dfc295956))
+* support openAI response with json ([649331f](https://github.com/tardis-ksh/hexo-ai-summaries/commit/649331f9d7c4c64ecdb598ef7bfa78f92be2d19e))
+* support or ([ab8101f](https://github.com/tardis-ksh/hexo-ai-summaries/commit/ab8101fd46e488a5cb4153d4c21a051e618e1204))
+
+
+### BREAKING CHANGES
+
+* refactor script.tpl
+
+## rename fields
+1. geminiConfig => aiConfig
+
+## fields default value change
+1. temperature => undefined(default 0.8)
+2. headers => undefined(default object)
+
+
+
 # [0.10.0](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.9.0...v0.10.0) (2025-02-18)
 
 
@@ -31,15 +54,6 @@
 ### Features
 
 * del alt attr ([073a4ac](https://github.com/tardis-ksh/hexo-ai-summaries/commit/073a4acd281fd297dc1d634a25f8881990432b83))
-
-
-
-## [0.5.1](https://github.com/tardis-ksh/hexo-ai-summaries/compare/v0.5.0...v0.5.1) (2024-06-20)
-
-
-### Bug Fixes
-
-* useless moment ([1213442](https://github.com/tardis-ksh/hexo-ai-summaries/commit/1213442a8d9fd95fea29056f1ac25725fe66f676))
 
 
 
