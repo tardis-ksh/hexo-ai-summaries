@@ -1,7 +1,7 @@
 export interface PluginConfig {
   PACKAGE_VERSION: string;
   enable: boolean;
-  aiSummaryApi: string;
+  aiSummaryApi?: string;
   prompt?: string;
   maxToken?: number;
   customHtml?: {

@@ -7,7 +7,9 @@
     "build": "tsup",
     "prepare": "husky",
     "format": "prettier --write 'src/**/*.{ts,js,json,md}'",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "check": "pnpm lint && pnpm typecheck && pnpm build"
   },
   "files": [
     "dist/**",
@@ -32,39 +34,38 @@
   "license": "MIT",
   "description": "AI generates article summaries with support for custom templates",
   "devDependencies": {
-    "@commitlint/cli": "^19.8.0",
-    "@commitlint/config-conventional": "^19.8.0",
-    "@eslint/js": "^9.24.0",
-    "@types/eslint__js": "^9.14.0",
-    "@types/hexo": "^7.0.0",
+    "@commitlint/cli": "^21.2.1",
+    "@commitlint/config-conventional": "^21.2.0",
+    "@eslint/js": "^10.0.1",
     "@types/lodash.merge": "^4.6.9",
-    "@types/node": "^22.14.1",
-    "@typescript-eslint/parser": "^8.29.1",
-    "eslint": "^9.24.0",
-    "eslint-config-prettier": "^10.1.2",
-    "eslint-plugin-prettier": "^5.2.6",
-    "globals": "^16.0.0",
+    "@types/node": "^26.1.2",
+    "@typescript-eslint/parser": "^8.65.0",
+    "eslint": "^10.8.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.6",
+    "globals": "^17.8.0",
     "husky": "^9.1.7",
-    "lint-staged": "^15.5.1",
-    "prettier": "^3.5.3",
-    "tsup": "^8.4.0",
-    "typescript": "^5.8.3",
-    "typescript-eslint": "^8.29.1"
+    "lint-staged": "^17.2.0",
+    "prettier": "^3.9.6",
+    "tsup": "^8.5.1",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.65.0"
   },
   "lint-staged": {
-    "src/*.{ts,js,json,md}": [
-      "pnpm run format",
-      "pnpm run lint"
-    ]
+    "*.{ts,js,mjs}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,md,yaml,yml}": "prettier --write"
   },
   "publishConfig": {
     "access": "public"
   },
   "dependencies": {
-    "chalk": "^5.4.1",
-    "handlebars": "^4.7.8",
-    "hexo": "^7.3.0",
+    "chalk": "^6.0.0",
+    "handlebars": "^4.7.9",
+    "hexo": "^8.1.2",
     "lodash.merge": "^4.6.2"
   },
-  "packageManager": "pnpm@10.8.0"
+  "packageManager": "pnpm@11.18.0"
 }

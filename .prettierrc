@@ -4,5 +4,6 @@
   "arrowParens": "always",
   "proseWrap": "never",
   "quoteProps": "consistent",
-  "trailingComma": "all"
+  "trailingComma": "all",
+  "endOfLine": "auto"
 }

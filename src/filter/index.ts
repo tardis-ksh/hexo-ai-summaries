@@ -3,6 +3,7 @@ import path from 'node:path';
 
 import { HtmlPath, PLUGIN_NAME } from '@/constants';
 import { PluginConfig } from '@/types';
+import IHexo from '@/types/hexo';
 import * as process from 'node:process';
 import generateTemplate from '@/handlebars';
 
@@ -20,7 +21,11 @@ ${
 `;
 };
 
-const addAiContentFilter = async (data: any) => {
+type PostData = IHexo['Posts'][number] & {
+  'ai-summaries'?: boolean;
+};
+
+const addAiContentFilter = async (data: PostData) => {
   const { generateAfterDate, customHtml } = hexo.config[
     PLUGIN_NAME
   ] as PluginConfig;

@@ -10,7 +10,7 @@ handlebars.registerHelper('json', function (value) {
 });
 
 // parse if
-handlebars.registerHelper('if_eq', function (a, b, opts) {
+handlebars.registerHelper('if_eq', function (this: unknown, a, b, opts) {
   if (a === b) {
     return opts.fn(this);
   }
@@ -18,12 +18,15 @@ handlebars.registerHelper('if_eq', function (a, b, opts) {
 });
 
 // ifOr
-handlebars.registerHelper('ifOr', function (arg1, arg2, options) {
-  if (arg1 || arg2) {
-    return options.fn(this);
-  }
-  return options.inverse(this);
-});
+handlebars.registerHelper(
+  'ifOr',
+  function (this: unknown, arg1, arg2, options) {
+    if (arg1 || arg2) {
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  },
+);
 
 const generateTemplate = (content: string, config: object) => {
   const template = handlebars.compile(content, { noEscape: true });
