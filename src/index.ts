@@ -24,6 +24,7 @@ const DefaultConfig: PluginConfig = {
   prompt: `You are a highly skilled AI trained in language comprehension and summarization. I would like you to read the text delimited by triple quotes and summarize it into a concise abstract paragraph. Aim to retain the most important points, providing a coherent and readable summary that could help a person understand the main points of the discussion without needing to read the entire text. Please avoid unnecessary details or tangential points.\nOnly give me the output and nothing else. Do not wrap responses in quotes. Respond in the Chinese language.`,
   aiConfig: {
     model: 'gpt-4o',
+    apiMode: 'chat-completions',
     idempotentHeader: false,
     stream: true,
     // temperature: 0.7,

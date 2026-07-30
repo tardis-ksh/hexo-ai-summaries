@@ -37,7 +37,7 @@ hexo-ai-summaries:
   enable: true
   # only work after this date
   generateAfterDate: 2024/05 # optional
-  aiSummaryApi: https://<cloudflare workers url>.workers.dev/v1/chat/completions
+  aiSummaryApi: https://<cloudflare workers url>.workers.dev/v1/chat/completions # use /v1/responses with apiMode: responses
   maxToken: 30000 # optional
   prompt:
     You are a highly skilled AI trained in language comprehension and summarization. I would like you to read the text delimited by triple quotes and summarize it into a concise abstract paragraph. Aim to retain the most important points, providing a coherent and readable summary that could help a person understand the main points of the discussion without needing to read the entire text. Please avoid unnecessary details or tangential points.
@@ -45,6 +45,7 @@ hexo-ai-summaries:
   # fetch body
   aiConfig:
     model: gpt-4o
+    apiMode: chat-completions # optional: chat-completions | responses, default chat-completions
     temperature: 0.7 # optional
     stream: false # optional default true
     headers: { 'Content-Type': 'application/json' } # optional, default undefined

@@ -5,6 +5,10 @@ handlebars.registerHelper('raw', function (options) {
   return options.toString();
 });
 
+handlebars.registerHelper('json', function (value) {
+  return value === undefined ? 'undefined' : JSON.stringify(value);
+});
+
 // parse if
 handlebars.registerHelper('if_eq', function (a, b, opts) {
   if (a === b) {
@@ -21,7 +25,7 @@ handlebars.registerHelper('ifOr', function (arg1, arg2, options) {
   return options.inverse(this);
 });
 
-const generateTemplate = (content: string, config: Record<string, any>) => {
+const generateTemplate = (content: string, config: object) => {
   const template = handlebars.compile(content, { noEscape: true });
   return template(config);
 };

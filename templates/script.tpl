@@ -5,21 +5,24 @@ class GeminiAI {
   }
 
   initVariables() {
-    this.version = '{{{PACKAGE_VERSION}}}';
+    this.version = {{{json PACKAGE_VERSION}}};
 
-    /**
-     * stream input area
-     */
-
-    /**
-     * unFinish code flag. half code symbol(`).
-     * eg: `some code input => <code data-code-input="">some code input</code>
-     */
     this.unFinishFlag = 'data-code-input';
-    this.lastUnFinishCodeReg = new RegExp(`<code\\s${this.unFinishFlag}="">(.*?)<\\/code>`);
     this.aiTextQueue = [];
-    // random number between 1 and 3
-    this.aiTextLimit = () => Math.max(Math.round(Math.random() * 3), 1);
+    this.typingFrame = undefined;
+    this.typingElement = undefined;
+    this.typingDone = false;
+    this.typingResolve = undefined;
+    this.typingPromise = Promise.resolve();
+    this.hasResponseText = false;
+    this.isInCode = false;
+    this.openCodeElement = undefined;
+    this.outputContainer = undefined;
+    this.outputTextNode = undefined;
+    this.segmenter =
+      typeof Intl.Segmenter === 'function'
+        ? new Intl.Segmenter(undefined, { granularity: 'grapheme' })
+        : undefined;
 
     /**
      * Dom selector
@@ -31,28 +34,25 @@ class GeminiAI {
      * AI Area
      */
     this.aiConfig = {
-      api: '{{{aiSummaryApi}}}',
+      api: {{{json aiSummaryApi}}},
       tagConfig: {
         {{#each tagConfig}}
-         '{{@key}}': '{{this}}',
+         {{{json @key}}}: {{{json this}}},
         {{/each}}
       },
-      maxToken: {{{maxToken}}},
-      model: '{{{ aiConfig.model }}}',
-      {{#if aiConfig.temperature}}
-      temperature: {{{ aiConfig.temperature }}},
-      {{/if}}
-      {{#if aiConfig.stream}}
-      stream: {{{ aiConfig.stream }}},
-      {{/if}}
-      prompt: "{{{prompt}}}",
+      maxToken: {{{json maxToken}}},
+      model: {{{json aiConfig.model}}},
+      apiMode: {{{json aiConfig.apiMode}}},
+      temperature: {{{json aiConfig.temperature}}},
+      stream: {{{json aiConfig.stream}}},
+      prompt: {{{json prompt}}},
       {{#ifOr aiConfig.headers aiConfig.idempotentHeader }}
         headers: {
         {{#if aiConfig.idempotentHeader }}
         'X-Ca-Nonce': window.crypto.randomUUID(),
         {{/if}}
         {{#each aiConfig.headers}}
-         '{{@key}}': '{{this}}',
+         {{{json @key}}}: {{{json this}}},
         {{/each}}
       },
       {{/ifOr}}
@@ -112,261 +112,295 @@ class GeminiAI {
   }
 
   initAiSummaries() {
-      this.postAI.addEventListener('click', this.onAIClick.bind(this));
+    this.postAI.addEventListener('click', this.onAIClick.bind(this));
+  }
+
+  segmentText(text) {
+    if (this.segmenter) {
+      return Array.from(this.segmenter.segment(text), ({ segment }) => segment);
     }
 
-    /**
-     * @Description:
-     * @param {String} (content)
-     * @param {Element} (contentElement)
-     * @param {Boolean} (needEscape)
-     * @return String
-     */
-    parseCodeString(content, contentElement, needEscape) {
-      let replaceEscapeString = needEscape
-        ? content
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;')
-        : content;
+    return Array.from(text);
+  }
 
-      const codeSymbol = '`';
-      let result = '';
-      let codeContent = '';
-      let isInCode = false;
+  startTyping(element) {
+    this.cancelTyping();
+    this.typingElement = element;
+    this.outputContainer = element;
+    this.typingDone = false;
+    this.hasResponseText = false;
+    this.typingPromise = new Promise((resolve) => {
+      this.typingResolve = resolve;
+    });
+  }
 
-      const fullContent = contentElement.innerHTML;
-      const hasUnFinishCode = fullContent.includes(this.unFinishFlag);
-      // 处理未结束的 code
-      if (hasUnFinishCode) {
-        const codeEndIndex = replaceEscapeString.indexOf(codeSymbol);
-        // 说明当前 string 仍没有 end
-        if (codeEndIndex < 0) {
-          contentElement.innerHTML = fullContent.replace(
-            this.lastUnFinishCodeReg,
-            `<code ${this.unFinishFlag}>$1${replaceEscapeString}</code>`,
-          );
-          return '';
-        }
+  enqueueText(text) {
+    if (typeof text !== 'string' || !text.length) {
+      return;
+    }
 
-        contentElement.innerHTML = fullContent.replace(
-          this.lastUnFinishCodeReg,
-          `<code>$1${replaceEscapeString.slice(0, codeEndIndex)}</code>`,
-        );
+    this.hasResponseText = true;
+    this.aiTextQueue.push(...this.segmentText(text));
+    this.scheduleTypingFrame();
+  }
 
-        replaceEscapeString = replaceEscapeString.slice(codeEndIndex + 1);
+  scheduleTypingFrame() {
+    if (this.typingFrame === undefined) {
+      this.typingFrame = requestAnimationFrame(() => this.renderTypingFrame());
+    }
+  }
 
-        if (!replaceEscapeString) {
-          return '';
-        }
+  renderTypingFrame() {
+    this.typingFrame = undefined;
+
+    if (this.aiTextQueue.length) {
+      const batchSize = Math.min(12, Math.max(1, Math.ceil(this.aiTextQueue.length / 24)));
+      this.appendRenderedText(this.aiTextQueue.splice(0, batchSize).join(''));
+
+      if (this.aiTextQueue.length) {
+        this.scheduleTypingFrame();
       }
+    }
 
-      /**
-       * 处理剩下 code
-       * 将字符串中符合条件的 code 内容，先储存，等遇到完整的 `` 的符号后再设置为标签
-       * 通过 isInCode 变量作为 flag，每次遇到 ` 符号时取反，默认 false
-       * 后面根据 isInCode 当前字符是否为 code 内容，再存储至 codeContent 变量中
-       *
-       * 若循环结束 isInCode 仍为 true，说明后面还有剩余的 code 内容，通过给 code 增加标签来处理
-       */
-      for (let i = 0; i < replaceEscapeString.length; i += 1) {
-        const str = replaceEscapeString[i];
-        if (str === codeSymbol) {
-          if (isInCode) {
-            // end code
-            result += `<code>${codeContent}</code>`;
-          }
+    if (this.typingDone && this.aiTextQueue.length === 0) {
+      this.resolveTyping();
+    }
+  }
 
-          codeContent = '';
-          isInCode = !isInCode;
-        } else if (isInCode) {
-          codeContent += str;
+  appendRenderedText(text) {
+    for (const segment of this.segmentText(text)) {
+      if (segment === '`') {
+        if (this.isInCode) {
+          this.openCodeElement.removeAttribute(this.unFinishFlag);
+          this.outputContainer = this.typingElement;
+          this.openCodeElement = undefined;
         } else {
-          result += str;
+          this.openCodeElement = document.createElement('code');
+          this.openCodeElement.setAttribute(this.unFinishFlag, '');
+          this.typingElement.append(this.openCodeElement);
+          this.outputContainer = this.openCodeElement;
         }
+
+        this.isInCode = !this.isInCode;
+        this.outputTextNode = undefined;
+        continue;
       }
 
-      // code 仍剩余
-      if (isInCode) {
-        result += `<code ${this.unFinishFlag}>${codeContent}</code>`;
+      if (!this.outputTextNode || this.outputTextNode.parentNode !== this.outputContainer) {
+        this.outputTextNode = document.createTextNode('');
+        this.outputContainer.append(this.outputTextNode);
       }
+      this.outputTextNode.appendData(segment);
+    }
+  }
 
-      return result;
+  finishTyping() {
+    this.typingDone = true;
+    if (this.aiTextQueue.length) {
+      this.scheduleTypingFrame();
+    } else {
+      this.resolveTyping();
     }
 
-    /**
-     * @Description: fakeStreamInput
-     * @param {String} (text)
-     * @param {Element} (element)
-     * @return
-     */
-    async fakeStreamInput(text, element) {
-      return new Promise(async (resolve) => {
-        if (text.length) {
-          this.aiTextQueue.push(text);
-        }
-        if (this.aiTextQueue.length === 0) {
-          resolve();
-          return;
-        }
-        const paragraph = this.aiTextQueue.shift();
+    return this.typingPromise;
+  }
 
-        const typeIn = async (textContent, index = 0) => {
-          if (!textContent.length || index >= textContent.length) {
-            await new Promise((resolveContent) => {
-              setTimeout(resolveContent);
-            });
-            resolve();
-            return;
-          }
+  resolveTyping() {
+    if (this.typingResolve) {
+      this.typingResolve();
+      this.typingResolve = undefined;
+    }
+  }
 
-          const slicedContent = String(textContent).slice(index, index + this.aiTextLimit());
-          const nextContent = this.parseCodeString(slicedContent, element);
+  cancelTyping() {
+    if (this.typingFrame !== undefined) {
+      cancelAnimationFrame(this.typingFrame);
+    }
+    this.typingFrame = undefined;
+    this.aiTextQueue = [];
+    this.typingDone = true;
+    this.resolveTyping();
+    this.typingElement = undefined;
+    this.outputContainer = undefined;
+    this.outputTextNode = undefined;
+    this.openCodeElement = undefined;
+    this.isInCode = false;
+  }
 
-          if (nextContent) {
-            element.innerHTML += nextContent;
-          }
+  extractStreamText(data) {
+    if (data?.type === 'error' || data?.error) {
+      throw new Error(data?.error?.message || data?.message || 'AI stream returned an error');
+    }
 
-          setTimeout(() => {
-            requestAnimationFrame(() => {
-              typeIn(textContent, index + slicedContent.length);
-            });
-          }, 50);
-        };
+    if (this.aiConfig.apiMode === 'responses') {
+      return data?.type === 'response.output_text.delta' ? data.delta : '';
+    }
 
-        typeIn(paragraph);
+    return data?.choices?.[0]?.delta?.content || '';
+  }
+
+  extractJsonText(data) {
+    if (this.aiConfig.apiMode === 'responses') {
+      if (typeof data?.output_text === 'string') {
+        return data.output_text;
+      }
+
+      return (data?.output || [])
+        .flatMap((output) => output?.content || [])
+        .filter((content) => content?.type === 'output_text' && typeof content.text === 'string')
+        .map((content) => content.text)
+        .join('');
+    }
+
+    return data?.choices?.[0]?.message?.content || '';
+  }
+
+  handleSseEvent(eventText) {
+    const dataText = eventText
+      .split(/\r?\n/)
+      .filter((line) => line.startsWith('data:'))
+      .map((line) => line.slice(5).trimStart())
+      .join('\n');
+
+    if (!dataText || dataText === '[DONE]') {
+      return;
+    }
+
+    this.enqueueText(this.extractStreamText(JSON.parse(dataText)));
+  }
+
+  async handleStreamResponse(response) {
+    if (!response.body) {
+      throw new Error('AI stream response has no body');
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) {
+        buffer += decoder.decode();
+        break;
+      }
+
+      buffer += decoder.decode(value, { stream: true });
+      let separator = buffer.match(/\r?\n\r?\n/);
+      while (separator && separator.index !== undefined) {
+        this.handleSseEvent(buffer.slice(0, separator.index));
+        buffer = buffer.slice(separator.index + separator[0].length);
+        separator = buffer.match(/\r?\n\r?\n/);
+      }
+    }
+
+    if (buffer.trim()) {
+      this.handleSseEvent(buffer);
+    }
+  }
+
+  async handleJsonResponse(response) {
+    const text = this.extractJsonText(await response.json());
+    if (!text) {
+      throw new Error(`AI ${this.aiConfig.apiMode} response contains no text`);
+    }
+
+    this.enqueueText(text);
+  }
+
+  buildRequestBody(input, updateTime) {
+    const commonBody = {
+      model: this.aiConfig.model,
+      temperature: this.aiConfig.temperature,
+      stream: this.aiConfig.stream,
+      updateTime,
+      title: this.postTile,
+    };
+
+    if (this.aiConfig.apiMode === 'responses') {
+      return {
+        ...commonBody,
+        instructions: this.aiConfig.prompt,
+        input,
+      };
+    }
+
+    return {
+      ...commonBody,
+      messages: [
+        { role: 'system', content: this.aiConfig.prompt },
+        { role: 'user', content: input },
+      ],
+    };
+  }
+
+  initAiResult() {
+    this.postAI.insertAdjacentHTML(
+      'afterend',
+      '<div class="post-gemini-ai-result-wrap"> <div class="note primary no-icon flat"> <p class="post-gemini-ai-result"></p>  <span class="ai-typed-cursor">|</span></div> </div>',
+    );
+    this.postAI.classList.add('post-gemini-noclick');
+  }
+
+  escapeHtml(str) {
+    return str
+      .replace(/\n/g, '')
+      .replace(/[ ]+/g, ' ')
+      .replace(/<pre>[\s\S]*?<\/pre>/g, '');
+  }
+
+  onAIClick = async () => {
+    const postAiTrigger = document.querySelector(this.aiTriggerSelctor);
+
+    this.initAiResult();
+    const resultWrap = document.querySelector('.post-gemini-ai-result-wrap');
+    const postAIResult = resultWrap.querySelector('.post-gemini-ai-result');
+    const typedCursor = resultWrap.querySelector('.ai-typed-cursor');
+    this.startTyping(postAIResult);
+
+    try {
+      const input = document.querySelector(this.aiConfig.tagConfig.content).innerText;
+      const postToc = document.querySelector(this.aiConfig.tagConfig.toc);
+      const updateTimeEl = document.querySelector('.post-meta-date-updated');
+      const updateTime = Date.parse(updateTimeEl?.getAttribute('datetime') || '');
+
+      postAiTrigger.classList.add('ai-summary-active');
+
+      const inputContent = this.escapeHtml(input).substring(0, this.aiConfig.maxToken);
+      const toAI = `文章标题：${this.postTile}；文章目录：${postToc?.textContent}；具体内容：${inputContent}`;
+      const res = await fetch(this.aiConfig.api, {
+        method: 'POST',
+        headers: this.aiConfig.headers,
+        body: JSON.stringify(this.buildRequestBody(toAI, updateTime)),
       });
-    }
 
-    /**
-     * @Description:
-     * @param {Response} (response) openAI style response (only work on stream)
-     * @param {Element} (postAIResultEl)
-     */
-    async handleStreamResponse(response, postAIResultEl) {
-      /** @type {ReadableStreamDefaultReader<Uint8Array>} */
-      const reader = response.body.getReader();
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) {
-          break;
-        }
-        const text = new TextDecoder().decode(value);
-        const strList = text.split('\n').filter(Boolean);
-
-        const str = strList.reduce((acc, currentValue) => {
-          if (currentValue.includes('DONE') || !currentValue.includes('data:')) {
-            return acc;
-          }
-
-          /**
-           * @type \{{
-           *   choices: Array<{
-           *     delta: {
-           *       content?: string
-           *     }
-           *   }>
-           * \}}
-           */
-          const data = JSON.parse(currentValue.substring(6)); // remove "data: "
-          const nextStr = data?.choices[0].delta.content;
-          if (!nextStr) {
-            return acc;
-          }
-          return `${acc}${nextStr}`;
-        }, '');
-
-        await this.fakeStreamInput(str, postAIResultEl);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
       }
-    }
 
-    /**
-     * @Description:
-     * @param {Object<{ choices: [{ message: { content: String } }] }>} (data) openAI style data (only work on json)
-     * @param {Element} (postAIResultEl)
-     */
-    async handleJsonResponse(data, postAIResultEl) {
-      await this.fakeStreamInput(data?.choices[0].message.content, postAIResultEl);
-    }
-
-    initAiResult() {
-      this.postAI.insertAdjacentHTML(
-        'afterend',
-        '<div class="post-gemini-ai-result-wrap"> <div class="note primary no-icon flat"> <p class="post-gemini-ai-result"></p>  <span class="ai-typed-cursor">|</span></div> </div>',
-      );
-      this.postAI.classList.add('post-gemini-noclick');
-    }
-
-    escapeHtml(str) {
-      return str
-        .replace(/\n/g, '')
-        .replace(/[ ]+/g, ' ')
-        .replace(/<pre>[\s\S]*?<\/pre>/g, '');
-    }
-
-    onAIClick = async () => {
-      const postAiTrigger = document.querySelector(this.aiTriggerSelctor);
-
-      this.initAiResult();
-
-      try {
-        let postAIResult = document.querySelector('.post-gemini-ai-result');
-        let input = document.querySelector(this.aiConfig.tagConfig.content).innerText;
-        const postToc = document.querySelector(this.aiConfig.tagConfig.toc);
-        const updateTimeEl = document.querySelector('.post-meta-date-updated');
-        const updateTime = Date.parse(updateTimeEl.getAttribute('datetime'));
-
-        // 修改 trigger style
-        postAiTrigger.classList.add('ai-summary-active');
-
-        let inputContent = this.escapeHtml(input)
-          // max-token
-          .substring(0, this.aiConfig.maxToken);
-        let toAI = `文章标题：${this.postTile}；文章目录：${postToc?.textContent}；具体内容：${inputContent}`;
-        const res = await fetch(this.aiConfig.api, {
-          method: 'POST',
-          headers: this.aiConfig.headers,
-          body: JSON.stringify({
-            model: this.aiConfig.model,
-            messages: [
-              {
-                role: 'system',
-                content: this.aiConfig.prompt,
-              },
-              { role: 'user', content: toAI },
-            ],
-            temperature: this.aiConfig.temperature,
-            stream: this.aiConfig.stream,
-            updateTime,
-            title: this.postTile,
-          }),
-        });
-
-        if (!res.ok) {
-          // 抛出错误，以便在 catch 块中捕获
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-
-        const contentType = res.headers.get('Content-Type');
-        if (contentType && contentType.includes('text/event-stream')) {
-          // 处理 SSE
-          await this.handleStreamResponse(res, postAIResult);
-        } else if (contentType && contentType.includes('application/json')) {
-          // 处理 JSON
-          res.json().then((data) => this.handleJsonResponse(data, postAIResult));
-        } else {
-          throw new Error('Unsupported content type');
-        }
-      } catch (error) {
-        document.querySelector('.post-gemini-ai-result-wrap').remove();
-        console.log(error);
-
-        // 恢复 trigger style
-        postAiTrigger.classList.remove('ai-summary-active');
+      const contentType = (res.headers.get('Content-Type') || '').toLowerCase();
+      if (contentType.includes('text/event-stream')) {
+        await this.handleStreamResponse(res);
+      } else if (contentType.includes('application/json')) {
+        await this.handleJsonResponse(res);
+      } else {
+        throw new Error(`Unsupported content type: ${contentType || 'unknown'}`);
       }
+
+      if (!this.hasResponseText) {
+        throw new Error(`AI ${this.aiConfig.apiMode} response contains no text`);
+      }
+
+      await this.finishTyping();
+      typedCursor.remove();
+    } catch (error) {
+      this.cancelTyping();
+      resultWrap.remove();
+      console.error(error);
+      this.postAI.classList.remove('post-gemini-noclick');
+      postAiTrigger.classList.remove('ai-summary-active');
     }
+  };
   }
 
   new GeminiAI();

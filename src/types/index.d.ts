@@ -16,6 +16,7 @@ export interface PluginConfig {
   }>;
   aiConfig?: {
     model: string;
+    apiMode?: 'chat-completions' | 'responses';
     temperature?: number;
     headers?: Record<string, string>;
     idempotentHeader?: boolean;
